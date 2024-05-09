@@ -1,0 +1,15 @@
+[package]
+name = "tilers"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1.37.0", features = ["full"] }
+geo-quadkey-rs = "0.1.1"
+image = "0.25.1"
+rocket = { version = "0.5.0", features = ["json"] }
+sqlx = { version = "0.7.4", features = ["sqlite", "runtime-tokio", "tls-native-tls"] }
+colorgrad = "0.6.2"
+

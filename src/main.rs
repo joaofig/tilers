@@ -91,25 +91,19 @@ async fn get_tile_file_name(x: i32, y: i32, z:i32) -> String {
     let path = Path::new(&file_name);
 
     if !path.exists() {
-        let tile_quad_keys = get_tile_quad_keys(&quad_key).await;
+        let tile_quad_keys: Vec<TileQuadKey> = get_tile_quad_keys(&quad_key).await;
 
         if tile_quad_keys.is_empty() {
             file_name = get_default_filename();
         } else {
-            let tile_quad_keys = get_tile_quad_keys(&quad_key).await;
-
-            if tile_quad_keys.is_empty() {
-                file_name = get_default_filename();
-            } else {
-                let tile_pixels = get_tile_pixels(&quad_key, tile_quad_keys);
-                let range = get_level_range(quad_key.len() as i32 + 8).await;
-                let picture = paint_tile(tile_pixels, 
-                                                    get_color_gradient(),
-                                                    range);
-                let folder_name = format!("./tiles/{}", z);
-                create_dir_all(&folder_name).unwrap();
-                picture.save(&file_name).unwrap();
-            }
+            let tile_pixels: Vec<TilePixel> = get_tile_pixels(&quad_key, tile_quad_keys);
+            let range: LevelRange = get_level_range(quad_key.len() as i32 + 8).await;
+            let picture: RgbaImage = paint_tile(tile_pixels, 
+                                                get_color_gradient(),
+                                                range);
+            let folder_name: String = format!("./tiles/{}", z);
+            create_dir_all(&folder_name).unwrap();
+            picture.save(&file_name).unwrap();
         }
     }
     file_name

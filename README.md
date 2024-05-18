@@ -7,6 +7,29 @@ This repository contains the Rust project that implements a map tile generator s
 The web application uses a single entry point to serve the tiles which contain traffic density data for the 
 [Vehicle Energy Dataset](https://github.com/gsoh/VED).
 
+## Usage
+
+To launch the web application use the following command from the project's root:
+```shell
+cargo run --release
+```
+
+From a Jupyter Notebook, use the following code to show the map with overlayed tiles:
+```Python
+import folium
+from folium.raster_layers import TileLayer
+
+html_map = folium.Map(prefer_canvas=True, 
+                      tiles="cartodbpositron", 
+                      location=(42.274569, -83.733228), 
+                      zoom_start=13)
+tile_layer = TileLayer(tiles="http://127.0.0.1:8000/density/{x}/{y}/{z}", 
+                       overlay=True,
+                       attr="(C) JPF")
+tile_layer.add_to(html_map)
+html_map
+```
+
 ## References
 
 [Vehicle Energy Dataset](https://github.com/gsoh/VED)

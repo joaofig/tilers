@@ -30,6 +30,10 @@ tile_layer.add_to(html_map)
 html_map
 ```
 
+## Medium Article
+
+[Generating Map Tiles with Rust](https://towardsdatascience.com/generating-map-tiles-with-rust-dbdb0eb09b6b)
+
 ## References
 
 [Vehicle Energy Dataset](https://github.com/gsoh/VED)

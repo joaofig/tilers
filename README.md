@@ -1,5 +1,5 @@
 # tilers
-A Rust-base map tile generator
+A Rust-based map tile generator
 
 ## Description
 

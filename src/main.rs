@@ -11,16 +11,16 @@ use std::path::{PathBuf, Path};
 use rocket::fs::NamedFile;
 use image::{ImageBuffer, Rgba, RgbaImage};
 use geo_quadkey_rs::Quadkey;
-use colorgrad::{Color, Gradient, CustomGradient};
+use colorgrad::{Color, Gradient, GradientBuilder, LinearGradient};
 use crate::localdb::{get_level_range, get_tile_quad_keys};
 use crate::models::{TileQuadKey, Point, TilePixel, LevelRange};
 
 
-fn get_color_gradient() -> Gradient {
-    let grad = CustomGradient::new().colors(
+fn get_color_gradient() -> LinearGradient {
+    let grad = GradientBuilder::new().colors(
         &[Color::from_rgba8(255, 255, 0, 127),
           Color::from_rgba8(255, 0, 0, 127)]
-    ).build().unwrap();
+    ).build::<LinearGradient>().unwrap();
     grad
 }
 
@@ -31,13 +31,13 @@ fn make_rgba_tile(r: u8, g: u8, b: u8, a: u8) -> RgbaImage {
 
 
 fn paint_tile(pixels: Vec<TilePixel>, 
-              color_grad: Gradient,
+              color_grad: LinearGradient,
               range: LevelRange) -> RgbaImage {
     let mut bitmap = make_rgba_tile(0, 0, 0, 0);
 
     if range.width() > 0.0 {
         for pixel in pixels {
-            let intensity = (pixel.get_c() - range.min()).ln() / range.width().ln();
+            let intensity = ((pixel.get_c() - range.min()).ln() / range.width().ln()) as f32;
             let rgba = color_grad.at(intensity);
             let pix = Rgba::from(rgba.to_rgba8());
             bitmap.put_pixel(pixel.get_x() as u32,
